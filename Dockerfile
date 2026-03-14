@@ -1,14 +1,12 @@
-# Java 21
-FROM eclipse-temurin:21-jdk
-
-# Directorio de trabajo
+# Stage 1: build
+FROM eclipse-temurin:21-jdk AS build
 WORKDIR /app
+COPY . .
+RUN ./mvnw clean package -DskipTests
 
-# Copiar el JAR generado por Maven
-COPY target/*.jar app.jar
-
-# Puerto expuesto
+# Stage 2: run
+FROM eclipse-temurin:21-jdk
+WORKDIR /app
+COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-
-# Comando de inicio
 ENTRYPOINT ["java", "-jar", "app.jar"]
