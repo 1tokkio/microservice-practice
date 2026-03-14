@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: shopsmart-products-service
+    runtime: java
+    buildCommand: ./mvnw clean package -DskipTests
+    startCommand: java -jar target/products-service-0.0.1-SNAPSHOT.jar
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: JAVA_VERSION
+        value: 21
+    healthCheckPath: /health
